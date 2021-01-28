@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -23,5 +24,6 @@ public class Account {
     @Transient
     private String strCreationDate;
     private Date creationDate;
+    @NotBlank
     private String accountType;
 }

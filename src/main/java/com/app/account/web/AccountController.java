@@ -5,6 +5,7 @@ import com.app.account.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -13,7 +14,7 @@ public class AccountController {
     @Autowired
     private AccountService service;
 
-    @GetMapping("")
+    @GetMapping("/")
     public List<Account> getAll(){
         return service.getAll();
     }
@@ -24,7 +25,7 @@ public class AccountController {
     }
 
     @PostMapping("/save")
-    public Account save(@RequestBody Account account){
+    public Account save(@Valid @RequestBody Account account){
         return service.saveOrUpdate(account);
     }
 

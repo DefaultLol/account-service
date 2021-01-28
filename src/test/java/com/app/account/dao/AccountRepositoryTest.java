@@ -1,6 +1,7 @@
 package com.app.account.dao;
 
 import com.app.account.models.Account;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -20,8 +21,8 @@ public class AccountRepositoryTest {
     @Autowired
     AccountRepository accountRepository;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         for(int i=0;i<5;i++){
             Date creationDate=new Date();
             account=new Account(String.valueOf(i),"458"+i,159,0.0,"19-7-2021",creationDate,"compte 3000");
@@ -47,16 +48,19 @@ public class AccountRepositoryTest {
     @Test
     public void test_findAll(){
         List<Account> accounts=accountRepository.findAll();
+        System.out.println(accounts.size());
         assertTrue(accounts.size() > 0);
-        assertEquals(accounts.get(0).getAmount(),0);
+        assertEquals(accounts.get(0).getAmount(),159);
     }
+
     @Test
     public void test_delete(){
         List<Account> accounts=accountRepository.findAll();
-        assertTrue(accounts.size() == 5);
+        System.out.println(accounts.size());
+        assertTrue(accounts.size() == 6);
         accountRepository.delete(accounts.get(0));
         accounts=accountRepository.findAll();
-        assertTrue(accounts.size() == 4);
+        assertTrue(accounts.size() == 5);
     }
 
 }
