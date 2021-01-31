@@ -20,7 +20,7 @@ public class SecurityFilter implements Filter {
         System.out.println(request.getServerName());
         System.out.println(request.getServerPort());
         System.out.println(request.getServletContext());
-        if(!request.getLocalAddr().equals("172.19.99.90")){
+        if(!request.getServerName().equals("ensaspay-zuul-gateway.herokuapp.com")){
             //ANY POJO CLASS
             // ErrorResponse is a public return object that you define yourself
             ErrorDetails errorResponse = new ErrorDetails();
