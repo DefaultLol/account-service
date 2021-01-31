@@ -24,7 +24,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         System.out.println(request.getServerPort());
         System.out.println(request.getServletContext());
         System.out.println(request.getHeader("Authorization"));
-        JwtHandler.token=request.getHeader("Authorization");
+        JwtHandler.token="nani";
         if(!request.getServerName().equals("ensaspay-zuul-gateway.herokuapp.com")){
             //ANY POJO CLASS
             // ErrorResponse is a public return object that you define yourself
