@@ -2,6 +2,8 @@ package com.app.account.web;
 
 import com.app.account.models.Account;
 import com.app.account.service.AccountService;
+import com.app.account.utils.AddCreditRequest;
+import com.app.account.utils.PaymentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,12 @@ public class AccountController {
     @PostMapping("/save")
     public Account save(@Valid @RequestBody Account account){
         return service.saveOrUpdate(account);
+    }
+
+    @PostMapping("/addCredit")
+    public String payWithAccount(@RequestBody AddCreditRequest addCreditRequest){
+        service.addCredit(addCreditRequest);
+        return "Success";
     }
 
     @DeleteMapping("/{id}")
