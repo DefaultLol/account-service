@@ -17,6 +17,9 @@ public class SecurityFilter implements Filter {
         System.out.println("Here is my filter");
         System.out.println(request.getLocalName());
         System.out.println(request.getLocalAddr());
+        System.out.println(request.getServerName());
+        System.out.println(request.getServerPort());
+        System.out.println(request.getServletContext());
         if(!request.getLocalAddr().equals("172.19.99.90")){
             //ANY POJO CLASS
             // ErrorResponse is a public return object that you define yourself
