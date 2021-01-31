@@ -37,6 +37,11 @@ public class AccountController {
         return "Success";
     }
 
+    @GetMapping("/testing")
+    public String test(){
+        return "Nani";
+    }
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable String id){
         service.delete(id);
