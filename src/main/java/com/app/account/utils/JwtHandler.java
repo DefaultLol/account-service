@@ -3,9 +3,10 @@ package com.app.account.utils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 @Component
-@Scope(value="request", proxyMode= ScopedProxyMode.TARGET_CLASS)
+@ApplicationScope
 public class JwtHandler {
     private String token;
 
