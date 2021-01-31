@@ -17,6 +17,9 @@ public class AccountController {
     @Autowired
     private AccountService service;
 
+    @Autowired
+    private JwtHandler jwtHandler;
+
     @GetMapping("/")
     public List<Account> getAll(){
         return service.getAll();
@@ -40,7 +43,7 @@ public class AccountController {
 
     @GetMapping("/testing")
     public String test(){
-        return JwtHandler.token;
+        return jwtHandler.getToken();
     }
 
     @DeleteMapping("/{id}")
