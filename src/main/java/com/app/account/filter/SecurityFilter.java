@@ -1,25 +1,30 @@
 package com.app.account.filter;
 
 import com.app.account.exception.ErrorDetails;
+import com.app.account.utils.JwtHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
 @Component
-public class SecurityFilter implements Filter {
+public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("Here is my filter");
         System.out.println(request.getLocalName());
         System.out.println(request.getLocalAddr());
         System.out.println(request.getServerName());
         System.out.println(request.getServerPort());
         System.out.println(request.getServletContext());
+        System.out.println(request.getHeader("Authorization"));
+        JwtHandler.token=request.getHeader("Authorization");
         if(!request.getServerName().equals("ensaspay-zuul-gateway.herokuapp.com")){
             //ANY POJO CLASS
             // ErrorResponse is a public return object that you define yourself
@@ -34,8 +39,6 @@ public class SecurityFilter implements Filter {
             response.getOutputStream().write(responseToSend);
             return;
         }
-
-        chain.doFilter(request,response);
     }
 
     private byte[] restResponseBytes(ErrorDetails eErrorResponse) throws IOException {

@@ -3,6 +3,7 @@ package com.app.account.web;
 import com.app.account.models.Account;
 import com.app.account.service.AccountService;
 import com.app.account.utils.AddCreditRequest;
+import com.app.account.utils.JwtHandler;
 import com.app.account.utils.PaymentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class AccountController {
 
     @GetMapping("/testing")
     public String test(){
-        return "Nani";
+        return JwtHandler.token;
     }
 
     @DeleteMapping("/{id}")
