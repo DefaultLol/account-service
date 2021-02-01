@@ -1,6 +1,7 @@
 package com.app.account.service;
 
 import com.app.account.dao.AccountRepository;
+import com.app.account.exception.AccountAmountNotEnoughException;
 import com.app.account.exception.AccountNotFoundException;
 import com.app.account.models.Account;
 import com.app.account.utils.AddCreditRequest;
@@ -30,6 +31,7 @@ public class AccountService {
         String accountId=addCreditRequest.getAccountID();
         Account account=repo.findById(accountId).orElseThrow(() -> new AccountNotFoundException("Account with id : "+accountId+" not found"));
         double credit = addCreditRequest.getCredit();
+        if(account.getAmount() - (account.getCredit()+credit) < 0) throw new AccountAmountNotEnoughException("Not enough amount");
         account.setCredit(account.getCredit()+credit);
     }
 

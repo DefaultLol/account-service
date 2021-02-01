@@ -17,6 +17,12 @@ public class GlobalExceptionHandler {
         ErrorDetails errorDetails=new ErrorDetails(new Date(),exception.getMessage(),request.getDescription(false));
         return new ResponseEntity(errorDetails, HttpStatus.NOT_FOUND);
     }
+    //custom errors
+    @ExceptionHandler(AccountAmountNotEnoughException.class)
+    public ResponseEntity<?> amountNotEnough(AccountAmountNotEnoughException exception, WebRequest request){
+        ErrorDetails errorDetails=new ErrorDetails(new Date(),exception.getMessage(),request.getDescription(false));
+        return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 
     //global exception handling
     @ExceptionHandler(Exception.class)

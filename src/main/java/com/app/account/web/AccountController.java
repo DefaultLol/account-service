@@ -3,8 +3,6 @@ package com.app.account.web;
 import com.app.account.models.Account;
 import com.app.account.service.AccountService;
 import com.app.account.utils.AddCreditRequest;
-import com.app.account.utils.JwtHandler;
-import com.app.account.utils.PaymentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +14,6 @@ import java.util.List;
 public class AccountController {
     @Autowired
     private AccountService service;
-
-    @Autowired
-    private JwtHandler jwtHandler;
 
     @GetMapping("/")
     public List<Account> getAll(){
@@ -35,15 +30,15 @@ public class AccountController {
         return service.saveOrUpdate(account);
     }
 
-    @PostMapping("/addCredit")
-    public String payWithAccount(@RequestBody AddCreditRequest addCreditRequest){
-        service.addCredit(addCreditRequest);
-        return "Success";
-    }
-
     @GetMapping("/testing")
     public String test(){
-        return jwtHandler.getToken();
+        return "testing";
+    }
+
+    @PostMapping("/payment/addCredit")
+    public String addCredit(@RequestBody AddCreditRequest request){
+        service.addCredit(request);
+        return "Credit Added";
     }
 
     @DeleteMapping("/{id}")

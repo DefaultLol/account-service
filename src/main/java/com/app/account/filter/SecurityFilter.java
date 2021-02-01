@@ -1,9 +1,7 @@
 package com.app.account.filter;
 
 import com.app.account.exception.ErrorDetails;
-import com.app.account.utils.JwtHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,20 +14,9 @@ import java.util.Date;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    JwtHandler jwtHandler;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("Here is my filter");
-        System.out.println(request.getLocalName());
-        System.out.println(request.getLocalAddr());
-        System.out.println(request.getServerName());
-        System.out.println(request.getServerPort());
-        System.out.println(request.getServletContext());
-        System.out.println(request.getHeader("Authorization"));
-        jwtHandler.setToken(request.getHeader("Authorization"));
         if(!request.getServerName().equals("ensaspay-zuul-gateway.herokuapp.com")){
-            //ANY POJO CLASS
             // ErrorResponse is a public return object that you define yourself
             ErrorDetails errorResponse = new ErrorDetails();
             errorResponse.setDate(new Date());
