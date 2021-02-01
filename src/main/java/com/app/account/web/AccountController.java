@@ -3,6 +3,7 @@ package com.app.account.web;
 import com.app.account.models.Account;
 import com.app.account.service.AccountService;
 import com.app.account.utils.AddCreditRequest;
+import com.app.account.utils.PaymentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,12 @@ public class AccountController {
     public String addCredit(@RequestBody AddCreditRequest request){
         service.addCredit(request);
         return "Credit Added";
+    }
+
+    @PostMapping("/payment/payBill")
+    public String payBill(@RequestBody PaymentRequest request){
+        service.payBill(request);
+        return "Payment is successful";
     }
 
     @DeleteMapping("/{id}")

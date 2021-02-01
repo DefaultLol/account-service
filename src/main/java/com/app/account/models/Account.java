@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Data @AllArgsConstructor @NoArgsConstructor @ToString
 @Document(collection = "accounts")
@@ -26,4 +27,5 @@ public class Account {
     private Date creationDate;
     @NotBlank
     private String accountType;
+    private List<Bill> history;
 }
