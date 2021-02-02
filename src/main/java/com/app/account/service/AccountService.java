@@ -33,10 +33,8 @@ public class AccountService {
     }
 
     public void addCredit(AddCreditRequest addCreditRequest){
-        System.out.println("Im here");
         String accountId=addCreditRequest.getAccountID();
         Account account=repo.findById(accountId).orElseThrow(() -> new AccountNotFoundException("Account with id : "+accountId+" not found"));
-        System.out.println("nani");
         double credit = addCreditRequest.getCredit();
         if(account.getAmount() - (account.getCredit()+credit) < 0) throw new AccountAmountNotEnoughException("Not enough amount");
         account.setCredit(account.getCredit()+credit);
@@ -53,6 +51,7 @@ public class AccountService {
         if(account.getAmount() - account.getCredit() < 0) throw new AccountAmountNotEnoughException("Not enough money in account");
         account.setAmount(account.getAmount() - request.getBill().getAmount());
         account.setCredit(account.getCredit() - request.getBill().getAmount());
+        repo.save(account);
         History history=new History(null,request.getBill(),request.getCreancier(),request.getAccountID());
         historyRepo.save(history);
     }

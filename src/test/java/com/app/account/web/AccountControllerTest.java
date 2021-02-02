@@ -2,8 +2,13 @@ package com.app.account.web;
 
 import com.app.account.dao.AccountRepository;
 import com.app.account.exception.AccountNotFoundException;
+import com.app.account.filter.SecurityFilter;
 import com.app.account.models.Account;
+import com.app.account.models.Bill;
 import com.app.account.service.AccountService;
+import com.app.account.utils.AddCreditRequest;
+import com.app.account.utils.PaymentRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,36 +54,47 @@ public class AccountControllerTest {
     private AccountService accountService;
 
     @Test
-    public void testListAccounts() throws Exception {
-        /*List<Account> accounts=new ArrayList<>();
-        accounts.add(new Account("159","451",158.0,0.0,"14-7-2021",new Date(),"compte 30000"));
-        accounts.add(new Account("179","487",157.0,0.0,"15-8-2023",new Date(),"compte 40000"));
+    public void testListAccountsNotAuthorized() throws Exception{
+        List<Account> accounts=new ArrayList<>();
+        accounts.add(new Account("159","451",158.0,0.0,"14-7-2021",new Date(),"compte 30000",null));
         when(accountService.getAll()).thenReturn(accounts);
 
         String url="/api/account/";
         System.out.println(mockMvc);
-        mockMvc.perform(get(url)).andExpect(status().isOk());*/
+        mockMvc.perform(get(url)).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testListAccounts() throws Exception {
+        List<Account> accounts=new ArrayList<>();
+        accounts.add(new Account("159","451",158.0,0.0,"14-7-2021",new Date(),"compte 30000",null));
+        accounts.add(new Account("179","487",157.0,0.0,"15-8-2023",new Date(),"compte 40000",null));
+        when(accountService.getAll()).thenReturn(accounts);
+
+        String url="https://ensaspay-zuul-gateway.herokuapp.com/api/account/";
+        System.out.println(mockMvc);
+        mockMvc.perform(get(url)).andExpect(status().isOk());
     }
 
     @Test
     public void testAddAccount() throws Exception {
-        /*Account account =new Account("4865","451",158.0,0.0,"14-7-2021",new Date(),"compte 30000");
+        Account account =new Account("4865","451",158.0,0.0,"14-7-2021",new Date(),"compte 30000",null);
         when(accountService.saveOrUpdate(account)).thenReturn(account);
-        String url="/api/account/save";
+        String url="https://ensaspay-zuul-gateway.herokuapp.com/api/account/save";
         MvcResult mvcResult=mockMvc.perform(post(url).contentType("application/json").content(objectMapper.writeValueAsString(account)))
                 .andExpect(status().isOk()).andReturn();
 
         String response=mvcResult.getResponse().getContentAsString();
 
-        assertEquals(objectMapper.writeValueAsString(account),response);*/
+        assertEquals(objectMapper.writeValueAsString(account),response);
     }
 
     @Test
     public void testAmountShouldNotBeNull() throws Exception {
         Account account =new Account();
         account.setAccountNumber("5146");
-        account.setAccountType("");
-        String url="/api/account/save";
+        account.setAccountType("compt 3000");
+        String url="https://ensaspay-zuul-gateway.herokuapp.com/api/account/save";
         mockMvc.perform(post(url).contentType("application/json").content(objectMapper.writeValueAsString(account)))
                 .andExpect(status().isInternalServerError());
 
@@ -87,14 +103,48 @@ public class AccountControllerTest {
 
     @Test
     public void testFindAccountById() throws Exception {
-        /*String accountId="4865";
-        Account account =new Account("4865","451",158.0,0.0,"14-7-2021",new Date(),"compte 30000");
+        String accountId="4865";
+        Account account =new Account("4865","451",158.0,0.0,"14-7-2021",new Date(),"compte 30000",null);
         when(accountService.findById(accountId)).thenReturn(account);
 
-        String url="/api/account/" + accountId;
+        String url="https://ensaspay-zuul-gateway.herokuapp.com/api/account/" + accountId;
         MvcResult mvcResult = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 
-        assertEquals(objectMapper.writeValueAsString(account),mvcResult.getResponse().getContentAsString());*/
+        assertEquals(objectMapper.writeValueAsString(account),mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void testPaymentRequest() throws Exception {
+        Bill bill=new Bill();
+        bill.setAmount(158.0);
+        bill.setId(8465L);
+        bill.setPayed(false);
+        bill.setBillingDate(new Date());
+        PaymentRequest request=new PaymentRequest(bill,"iam","8465");
+        doNothing().when(accountService).payBill(request);
+        String url="https://ensaspay-zuul-gateway.herokuapp.com/api/account/payment/payBill";
+
+        MvcResult mvcResult=mockMvc.perform(post(url).contentType("application/json").content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk()).andReturn();
+
+        String response=mvcResult.getResponse().getContentAsString();
+
+        assertEquals(response,"Payment is successful");
+
+    }
+
+    @Test
+    public void testAddCredit() throws Exception {
+        AddCreditRequest request=new AddCreditRequest("846",79.0);
+        doNothing().when(accountService).addCredit(request);
+        String url="https://ensaspay-zuul-gateway.herokuapp.com/api/account/payment/addCredit";
+
+        MvcResult mvcResult=mockMvc.perform(post(url).contentType("application/json").content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk()).andReturn();
+
+        String response=mvcResult.getResponse().getContentAsString();
+
+        assertEquals(response,"Credit Added");
     }
 
     @Test
@@ -102,7 +152,7 @@ public class AccountControllerTest {
         String accountId="4865";
         when(accountService.findById(accountId)).thenThrow(AccountNotFoundException.class);
 
-        String url="/api/account/" + accountId;
+        String url="https://ensaspay-zuul-gateway.herokuapp.com/api/account/" + accountId;
         mockMvc.perform(get(url)).andExpect(status().isNotFound());
     }
 
@@ -111,7 +161,7 @@ public class AccountControllerTest {
         String accountId="159";
         doNothing().when(accountService).delete(accountId);
 
-        String url="/api/account/" + accountId;
+        String url="https://ensaspay-zuul-gateway.herokuapp.com/api/account/" + accountId;
 
         mockMvc.perform(delete(url)).andExpect(status().isOk());
     }

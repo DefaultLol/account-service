@@ -23,11 +23,11 @@ public class AccountRepositoryTest {
 
     @Before
     public void setUp() {
-        /*for(int i=0;i<5;i++){
+        for(int i=0;i<5;i++){
             Date creationDate=new Date();
-            account=new Account(String.valueOf(i),"458"+i,159,0.0,"19-7-2021",creationDate,"compte 3000");
+            account=new Account(String.valueOf(i),"458"+i,159,0.0,"19-7-2021",creationDate,"compte 3000",null);
             accountRepository.save(account);
-        }*/
+        }
     }
 
     @Test

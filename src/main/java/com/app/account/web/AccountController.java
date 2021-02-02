@@ -31,11 +31,6 @@ public class AccountController {
         return service.saveOrUpdate(account);
     }
 
-    @GetMapping("/testing")
-    public String test(){
-        return "testing";
-    }
-
     @PostMapping("/payment/addCredit")
     public String addCredit(@RequestBody AddCreditRequest request){
         service.addCredit(request);
@@ -48,10 +43,6 @@ public class AccountController {
         return "Payment is successful";
     }
 
-    @GetMapping("/payment/test")
-    public String text(){
-        return "testing";
-    }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable String id){
