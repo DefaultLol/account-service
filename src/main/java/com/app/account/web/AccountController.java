@@ -48,6 +48,11 @@ public class AccountController {
         return "Payment is successful";
     }
 
+    @GetMapping("/payment/test")
+    public String text(){
+        return "testing";
+    }
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable String id){
         service.delete(id);
