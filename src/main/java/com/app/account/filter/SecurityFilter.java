@@ -29,6 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             response.getOutputStream().write(responseToSend);
             return;
         }
+        System.out.println("hahahah");
         filterChain.doFilter(request,response);
     }
 
