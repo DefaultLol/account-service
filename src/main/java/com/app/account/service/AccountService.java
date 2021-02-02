@@ -33,11 +33,14 @@ public class AccountService {
     }
 
     public void addCredit(AddCreditRequest addCreditRequest){
+        System.out.println("Im here");
         String accountId=addCreditRequest.getAccountID();
         Account account=repo.findById(accountId).orElseThrow(() -> new AccountNotFoundException("Account with id : "+accountId+" not found"));
+        System.out.println("nani");
         double credit = addCreditRequest.getCredit();
         if(account.getAmount() - (account.getCredit()+credit) < 0) throw new AccountAmountNotEnoughException("Not enough amount");
         account.setCredit(account.getCredit()+credit);
+        repo.save(account);
     }
 
     public Account saveOrUpdate(Account account){
