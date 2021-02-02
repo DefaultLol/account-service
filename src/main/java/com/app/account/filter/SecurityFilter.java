@@ -29,6 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             response.getOutputStream().write(responseToSend);
             return;
         }
+        filterChain.doFilter(request,response);
     }
 
     private byte[] restResponseBytes(ErrorDetails eErrorResponse) throws IOException {
