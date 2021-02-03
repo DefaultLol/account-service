@@ -39,7 +39,7 @@ public class AccountService {
         if(account.getAmount() - (account.getCredit()+credit) < 0) throw new AccountAmountNotEnoughException("Not enough amount");
         account.setCredit(account.getCredit()+credit);
         repo.save(account);
-        
+
     }
 
     public Account saveOrUpdate(Account account){
