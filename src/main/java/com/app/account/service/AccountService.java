@@ -46,6 +46,13 @@ public class AccountService {
         return repo.save(account);
     }
 
+    public Account alimentation(String accountID,double amount){
+        Account account=repo.findById(accountID).orElseThrow(() -> new AccountNotFoundException("Account not found"));
+        account.setAmount(account.getAmount()+amount);
+        repo.save(account);
+        return account;
+    }
+
     public void payBill(PaymentRequest request){
         String accountId=request.getAccountID();
         Account account=repo.findById(accountId).orElseThrow(() -> new AccountNotFoundException("Account with id : "+accountId+" not found"));

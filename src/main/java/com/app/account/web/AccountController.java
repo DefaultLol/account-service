@@ -37,6 +37,11 @@ public class AccountController {
         return "Credit Added";
     }
 
+    @GetMapping("/alimentation/{accountID}/{amount}")
+    public Account alimentationAccount(@PathVariable String accountID,@PathVariable double amount){
+        return service.alimentation(accountID,amount);
+    }
+
     @PostMapping("/payment/payBill")
     public String payBill(@RequestBody PaymentRequest request){
         service.payBill(request);
