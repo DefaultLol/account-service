@@ -89,7 +89,7 @@ public class AccountControllerTest {
         assertEquals(objectMapper.writeValueAsString(account),response);
     }
 
-    @Test
+    /*@Test
     public void testAmountShouldNotBeNull() throws Exception {
         Account account =new Account();
         account.setAccountNumber("5146");
@@ -99,7 +99,7 @@ public class AccountControllerTest {
                 .andExpect(status().isInternalServerError());
 
         Mockito.verify(accountService,times(0)).saveOrUpdate(account);
-    }
+    }*/
 
     @Test
     public void testFindAccountById() throws Exception {
